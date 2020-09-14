@@ -1,3 +1,13 @@
+
+H = ["6A09E667F3BCC908",
+     "BB67AE8584CAA73B",
+     "3C6EF372FE94F82B",
+     "A54FF53A5F1D36F1",
+     "510E527FADE682D1",
+     "9B05688C2B3E6C1F",
+     "1F83D9ABFB41BD6B",
+     "5BE0CD19137E2179"]
+
 def input_formatting(input_mess):
     # for c in input_mess:
     #     print(str(bin(ord(c))[2:].zfill(8)))
@@ -17,13 +27,17 @@ def input_formatting(input_mess):
 
     mess = input_mess_ascii_hex + "80" + len_of_mess.zfill(256*num_block - 2 - len(input_mess_ascii_hex))
 
+    print(len(mess))
     print(mess)
 
     return mess, num_block
 
 def hash_buffer_initialization(mess, numblock):
-    block_mess = [].append(mess[:])
+    block_mess = [mess[i*256:i*256+256] for i in range(numblock)]
+    print(block_mess)
+    # for c in block_mess:
+    #     print(c)
 
 input_mess = input()
-
-input_formatting(input_mess)
+mes, nu = input_formatting(input_mess)
+hash_buffer_initialization(mes, nu)
