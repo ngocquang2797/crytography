@@ -1,4 +1,8 @@
 
+Ch  = lambda x, y, z: (z ^ (x & (y ^ z)))
+Maj = lambda x, y, z: (((x | y) & z) | (x & y))
+
+
 H = ["6A09E667F3BCC908",
      "BB67AE8584CAA73B",
      "3C6EF372FE94F82B",
@@ -35,9 +39,15 @@ def input_formatting(input_mess):
 def hash_buffer_initialization(mess, numblock):
     block_mess = [mess[i*256:i*256+256] for i in range(numblock)]
     print(block_mess)
+    return block_mess
     # for c in block_mess:
     #     print(c)
 
+def word_expansion(block_mess):
+    W = [block_mess[i*16:i*16+16] for i in range(16)]
+    print(W)
+
 input_mess = input()
 mes, nu = input_formatting(input_mess)
-hash_buffer_initialization(mes, nu)
+blockmess = hash_buffer_initialization(mes, nu)
+word_expansion(blockmess[0])
