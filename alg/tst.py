@@ -12,29 +12,12 @@ H = ["6A09E667F3BCC908",
      "1F83D9ABFB41BD6B",
      "5BE0CD19137E2179"]
 
-def input_formatting(input_mess):
-    # for c in input_mess:
-    #     print(str(bin(ord(c))[2:].zfill(8)))
 
-    input_mess_ascii_bin = ''.join(str(bin(ord(c))[2:].zfill(8)) for c in input_mess)
-    # print(input_mess_ascii_bin)
-
-    input_mess_ascii_hex = ''.join(str(hex(ord(c))[2:]) for c in input_mess)
-    # print(input_mess_ascii_hex)
-
-    len_of_mess = hex(len(input_mess_ascii_bin))[2:].zfill(32)
-    # print(len_of_mess)
-
-    num_block = int((len(input_mess_ascii_hex)+len(len_of_mess))/256) + 1
-
-    print(num_block)
-
-    mess = input_mess_ascii_hex + "80" + len_of_mess.zfill(256*num_block - 2 - len(input_mess_ascii_hex))
-
-    print(len(mess))
-    print(mess)
-
-    return mess, num_block
+def input_format(m):
+    input_mess_ascii_hex = ''.join(str(hex(ord(c))[2:]) for c in m)
+    len_of_mess = hex(len(m) * 8)[2:].zfill(32)
+    num_block = int((len(input_mess_ascii_hex) + len(len_of_mess)) / 256) + 1
+    return  input_mess_ascii_hex + "80" + len_of_mess.zfill(256 * num_block - 2 - len(input_mess_ascii_hex))
 
 def hash_buffer_initialization(mess, numblock):
     block_mess = [mess[i*256:i*256+256] for i in range(numblock)]
@@ -48,6 +31,8 @@ def word_expansion(block_mess):
     print(W)
 
 input_mess = input()
-mes, nu = input_formatting(input_mess)
-blockmess = hash_buffer_initialization(mes, nu)
-word_expansion(blockmess[0])
+x = input_format(input_mess)
+print(x)
+print(len(x))
+# blockmess = hash_buffer_initialization(mes, nu)
+# word_expansion(blockmess[0])
