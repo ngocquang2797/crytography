@@ -49,7 +49,6 @@ class sha512(object):
 
     def _sha512_process(self, chunk):
         w = [0]*80
-        # w[0:16] = struct.unpack('!16Q', chunk)
         for i in range(16):
             w[i] = int(chunk[i*16:i*16+16],16)
 
