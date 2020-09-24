@@ -17,8 +17,9 @@ class Sha512_displ(Frame):
         code_txt = Label(self, text="XX")
         code_txt.grid(row=1, column=1)
         code_txt_box = Entry(self, text="Decode")
-        code_txt_box.insert(index=1,string="asdasdasd")
+        # code_txt_box.insert(index=1,string="asdasdasd")
         code_txt_box.configure(state="readonly")
+        code_txt_box.insert(index=1, string="asdasdasd")
         code_txt_box.grid(row=1, column=2)
 
 
