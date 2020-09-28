@@ -93,6 +93,6 @@ class sha512(object):
         return "".join(hex(c)[2:] for c in self._h)
 
 
-inp_mess = input()
-d = sha512(inp_mess)
-print(d.digest())
+# inp_mess = input()
+# d = sha512(inp_mess)
+# print(d.digest())
