@@ -68,7 +68,7 @@ s = [[14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7,
       4, 2, 1, 11, 10, 13, 7, 8, 15, 9, 12, 5, 6, 3, 0, 14,
       11, 8, 12, 7, 1, 14, 2, 13, 6, 15, 0, 9, 10, 4, 5, 3],
      [12, 1, 10, 15, 9, 2, 6, 8, 0, 13, 3, 4, 14, 7, 5, 11,
-      10, 1, 5, 4, 2, 7, 12, 9, 5, 6, 1, 13, 14, 0, 11, 3, 8,
+      10, 15, 4, 2, 7, 12, 9, 5, 6, 1, 13, 14, 0, 11, 3, 8,
       9, 14, 15, 5, 2, 8, 12, 3, 7, 0, 4, 10, 1, 13, 11, 6,
       4, 3, 2, 12, 9, 5, 15, 10, 11, 14, 1, 7, 6, 0, 8, 13],
      [4, 11, 2, 14, 15, 0, 8, 13, 3, 12, 9, 7, 5, 10, 6, 1,
@@ -91,6 +91,10 @@ p = [16, 7, 20, 21,
 
 numls = [1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
 
+# tc1
+# mss = "0000000100100011010001010110011110001001101010111100110111101111"
+# key = "0001001100110100010101110111100110011011101111001101111111110001"
+# tc2
 mss = "0000000100100011010001010110011110001001101010111100110111101111"
 key = "0001001100110100010101110111100110011011101111001101111111110001"
 
@@ -106,9 +110,9 @@ for i in range(16):
     k = C[i + 1] + D[i + 1]
     keyn.append("".join(k[pc2[j] - 1] for j in range(48)))
 
-# print(keyn)
-# print(C)
-# print(D)
+print(keyn)
+print(C)
+print(D)
 
 # msn 64-bit
 msn = ["".join(mss[ip[i] - 1] for i in range(64))]
@@ -117,23 +121,17 @@ print(msn)
 # L, R 32-bit
 L = [msn[0][:32]]
 R = [msn[0][32:]]
-
+# print("len(R) "+str(len(R[0])))
 #
 def E(R):
     return "".join(R[e[i] - 1] for i in range(48))
 
-
 def XOR(A, B):
-    print("XOR: "+A+" "+B)
-    return bin(int(A, 2) ^ int(B, 2))[2:]
+    return bin(int(A, 2) ^ int(B, 2))[2:].zfill(len(A))
 
 # S 6-bit
 def calS(S, i):
-    print("S: "+S)
-    print(int(S[:2], 2))
-    print(int(S[2:], 2))
-    print(bin(s[i][int(S[:2], 2) * 16 + int(S[2:], 2)])[2:].zfill(4))
-    return bin(s[i][int(S[:2], 2) * 16 + int(S[2:], 2)])[2:].zfill(4)
+    return bin(s[i][int(S[0]+S[-1], 2) * 16 + int(S[1:5], 2)])[2:].zfill(4)
 
 
 # R 32-bit
@@ -141,10 +139,7 @@ def calS(S, i):
 def f(R, key):
     F = XOR(E(R), key)
     # F 48-bit
-    print("F: "+F)
     S = "".join(calS(F[i * 6:i * 6 + 6], i) for i in range(8))
-    print("S: "+S)
-    print(len(S))
     return "".join(S[p[i] - 1] for i in range(32))
 
 
@@ -154,3 +149,8 @@ for i in range(16):
 
 print(L)
 print(R)
+
+RL = R[-1]+L[-1]
+
+de = "".join(RL[fp[i] - 1] for i in range(64))
+print(de)
