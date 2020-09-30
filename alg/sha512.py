@@ -82,7 +82,7 @@ class sha512(object):
 
         # self._buffer += m
         self.input_format(m)
-        print("buffer: " + self._buffer)
+        # print("buffer: " + self._buffer)
         self._counter += len(m)
 
         while len(self._buffer) >= 256:
