@@ -29,9 +29,10 @@ class sha512(object):
     block_size = 128
     digest_size = 64
 
-    def __init__(self, m=None):
+    def __init__(self, m=None, opti="ASCII"):
         self._buffer = ''
         self._counter = 0
+        self.optioncode = opti
 
         if m is not None:
             if type(m) is not str:
@@ -39,8 +40,11 @@ class sha512(object):
             self.update(m)
 
     def input_format(self, m):
-        input_mess_ascii_hex = ''.join(str(hex(ord(c))[2:]) for c in m)
-        len_of_mess = hex(len(m)*8)[2:].zfill(32)
+        input_mess_ascii_hex = ""
+        len_of_mess = 0
+        if self.optioncode == "ASCII":
+            input_mess_ascii_hex = ''.join(str(hex(ord(c))[2:]) for c in m)
+            len_of_mess = hex(len(m)*8)[2:].zfill(32)
         num_block = int((len(input_mess_ascii_hex) + len(len_of_mess)) / 256) + 1
         self._buffer = input_mess_ascii_hex + "80" + len_of_mess.zfill(256 * num_block - 2 - len(input_mess_ascii_hex))
 
