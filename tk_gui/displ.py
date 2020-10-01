@@ -7,6 +7,8 @@ class Sha512_displ(Frame):
         Frame.__init__(self)
         self.plaintxt = StringVar()
         self.decodetxt = ""
+        self.optioncode = StringVar()
+        self.optioncode.set("ASCII")
         self.init_window()
 
     def decode(self, *args):
@@ -28,11 +30,14 @@ class Sha512_displ(Frame):
         self.plain_txt_box = Entry(self, textvariable=self.plaintxt, width=150)
         self.plain_txt_box.grid(row=0, column=2)
 
+        drop = OptionMenu(self, self.optioncode, *["ASCII", "HEX", "BIN"])
+        drop.grid(row=0, column=3)
+
         self.decodetxt = sha512("").digest()
         code_txt = Label(self, text="Encoded")
         code_txt.grid(row=1, column=1)
         self.code_txt_box = Entry(self, textvariable=self.decodetxt, width=150)
-        self.code_txt_box.insert(index=0, string=self.decodetxt)
+        self.code_txt_box.insert(index=0, string=self.decodetxt+self.optioncode.get())
         self.code_txt_box.configure(state="readonly")
         self.code_txt_box.grid(row=1, column=2)
 
@@ -72,7 +77,7 @@ class des_disl(Frame):
         else:
             tkinter.messagebox.showerror('XXX', 'Key need 64-bit length')
 
-    def key_gen_window(self):
+    # def key_gen_window(self):
 
 
 import tkinter as tk
@@ -89,7 +94,7 @@ def main():
     # tab2 = ttk.Frame(tabControl)
 
     tabControl.add(tab2, text='SHA-512')
-    tabControl.add(tab1, text='Tab 1')
+    tabControl.add(tab1, text='DES')
     tabControl.pack(expand=1, fill="both")
 
     root.update()
