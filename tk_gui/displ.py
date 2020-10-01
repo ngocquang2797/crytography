@@ -12,8 +12,8 @@ class Sha512_displ(Frame):
         self.init_window()
 
     def decode(self, *args):
-        print(self.plaintxt.get())
-        self.decodetxt = sha512(self.plaintxt.get()).digest()
+        # print(self.plaintxt.get())
+        self.decodetxt = sha512(self.plaintxt.get(), self.optioncode.get()).digest()
         self.code_txt_box.configure(state="normal")
         self.code_txt_box.delete(0, 'end')
         self.code_txt_box.insert(index=1, string=self.decodetxt)
@@ -24,7 +24,7 @@ class Sha512_displ(Frame):
             if event.char in ('0', '1'):
                 print(event.char)
             elif event.keysym not in ('Alt_r', 'Alt_L', 'F4', 'BackSpace'):
-                print(event.keysym)
+                # print(event.keysym)
                 return 'break'
         elif self.optioncode.get() == "HEX":
             if event.char in ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'):

@@ -39,12 +39,22 @@ class sha512(object):
                 raise TypeError('%s() argument 1 must be string, not %s' % (self.__class__.__name__, type(m).__name__))
             self.update(m)
 
+    # check
     def input_format(self, m):
         input_mess_ascii_hex = ""
-        len_of_mess = 0
+        len_of_mess = ""
         if self.optioncode == "ASCII":
             input_mess_ascii_hex = ''.join(str(hex(ord(c))[2:]) for c in m)
             len_of_mess = hex(len(m)*8)[2:].zfill(32)
+        elif self.optioncode == "HEX":
+            input_mess_ascii_hex = m
+            len_of_mess = hex(len(m) * 4)[2:].zfill(32)
+        elif self.optioncode == "BIN":
+            if m=="":
+                input_mess_ascii_hex = ""
+            elif m != "":
+                input_mess_ascii_hex = hex(int(m, 2))[2:]
+            len_of_mess = hex(len(input_mess_ascii_hex)*4)[2:].zfill(32)
         num_block = int((len(input_mess_ascii_hex) + len(len_of_mess)) / 256) + 1
         self._buffer = input_mess_ascii_hex + "80" + len_of_mess.zfill(256 * num_block - 2 - len(input_mess_ascii_hex))
 
