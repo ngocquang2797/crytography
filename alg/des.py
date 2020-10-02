@@ -118,8 +118,14 @@ class DES(object):
         elif opt == "HEX":
             self.plaintxt = "".join(str(bin(int(c, 16))[2:].zfill(4)) for c in plaintxt)
             self.key = "".join(str(bin(int(c, 16))[2:].zfill(4)) for c in key)
-        # self.plaintxt = plaintxt
-        # self.key = key
+        elif opt == "BIN":
+            self.plaintxt = plaintxt
+            self.key = key
+        self.plaintxt = str(self.plaintxt).zfill((int(len(plaintxt)/64)+1)*64)
+        self.key = str(self.key).zfill(64)
+        print((self.plaintxt))
+        print(len(self.plaintxt))
+        self.code = []
         self.gen_key()
         self.decode()
 
@@ -134,7 +140,23 @@ class DES(object):
             self.key_gen.append("".join(k[pc2[j] - 1] for j in range(48)))
 
     def decode(self):
-        self.mess = ""
+        for j in range(int(len(self.plaintxt)/64)):
+            mss = self.plaintxt[j*64:j*64+64]
+            msn = ["".join(mss[ip[i] - 1] for i in range(64))]
+            L = [msn[0][:32]]
+            R = [msn[0][32:]]
+            for i in range(16):
+                L.append(R[i])
+                R.append(XOR(L[i], f(R[i], self.key_gen[i + 1])))
 
-acc = DES(plaintxt="abc5168", key="1254682325631475", opt="HEX")
-print(acc.plaintxt)
+            RL = R[-1] + L[-1]
+            de = "".join(RL[fp[i] - 1] for i in range(64))
+            self.code.append(de)
+
+    def code_hex(self):
+        return "".join(hex(int(self.code[i],2))[2:] for i in range(len(self.code)))
+
+
+acc = DES(plaintxt="ABC516810ABC0000ABC516810ABC0000", key="1254687512546875", opt="HEX")
+print(acc.code_hex())
+# print(acc.key)
