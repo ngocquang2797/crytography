@@ -111,9 +111,15 @@ p = [16, 7, 20, 21,
 numls = [1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
 
 class DES(object):
-    def __init__(self, plaintxt, key):
-        self.plaintxt = plaintxt
-        self.key = key
+    def __init__(self, plaintxt, key, opt="ASCII"):
+        if opt == "ASCII":
+            self.plaintxt = "".join(str(bin(ord(c))[2:].zfill(8)) for c in plaintxt)
+            self.key = "".join(str(bin(ord(c))[2:].zfill(8)) for c in key)
+        elif opt == "HEX":
+            self.plaintxt = "".join(str(bin(int(c, 16))[2:].zfill(4)) for c in plaintxt)
+            self.key = "".join(str(bin(int(c, 16))[2:].zfill(4)) for c in key)
+        # self.plaintxt = plaintxt
+        # self.key = key
         self.gen_key()
         self.decode()
 
@@ -129,3 +135,6 @@ class DES(object):
 
     def decode(self):
         self.mess = ""
+
+acc = DES(plaintxt="abc5168", key="1254682325631475", opt="HEX")
+print(acc.plaintxt)
