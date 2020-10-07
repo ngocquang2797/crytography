@@ -111,7 +111,7 @@ p = [16, 7, 20, 21,
 numls = [1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
 
 class DES(object):
-    def __init__(self, plaintxt, key, opt="ASCII"):
+    def __init__(self, plaintxt, key, opt="HEX"):
         if opt == "ASCII":
             self.plaintxt = "".join(str(bin(ord(c))[2:].zfill(8)) for c in plaintxt)
             self.key = "".join(str(bin(ord(c))[2:].zfill(8)) for c in key)
@@ -142,14 +142,14 @@ class DES(object):
     def decode(self):
         for j in range(int(len(self.plaintxt)/64)):
             mss = self.plaintxt[j*64:j*64+64]
-            msn = ["".join(mss[ip[i] - 1] for i in range(64))]
-            L = [msn[0][:32]]
-            R = [msn[0][32:]]
+            self.msn = ["".join(mss[ip[i] - 1] for i in range(64))]
+            self.L = [self.msn[0][:32]]
+            self.R = [self.msn[0][32:]]
             for i in range(16):
-                L.append(R[i])
-                R.append(XOR(L[i], f(R[i], self.key_gen[i + 1])))
+                self.L.append(self.R[i])
+                self.R.append(XOR(self.L[i], f(self.R[i], self.key_gen[i + 1])))
 
-            RL = R[-1] + L[-1]
+            RL = self.R[-1] + self.L[-1]
             de = "".join(RL[fp[i] - 1] for i in range(64))
             self.code.append(de)
 
