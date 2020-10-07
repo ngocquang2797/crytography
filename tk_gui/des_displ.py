@@ -27,28 +27,43 @@ pc2 = [14, 17, 11, 24, 1, 5,
 
 numls = [1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
 
-def createTable(root, txt, row, col):
-    t = Entry(root, width=20, fg='black')
-    t.grid(row=row, column=col)
+def createTable(root, txt, row, col, spanx = 1, width = 20):
+    t = Entry(root, width=width+spanx-1, fg='black')
+    t.grid(row=row, column=col, columnspan=spanx)
     t.insert(END, txt)
 
 class encrypt_disl(Toplevel):
     def __init__(self, plaintxt, key, opt_code="HEX"):
         Toplevel.__init__(self)
         self.encrypt = DES(plaintxt, key, opt_code)
-        createTable(self, "Plain text: " + plaintxt, 0, 0)
+        ECinfo = self.encrypt.getInfo()
+        rouKey = self.encrypt.getKey()
+        # print(ECinfo)
+        # print(ECinfo[0][2])
+        createTable(self, "Plain text: " + plaintxt, 0, 0, 4, 80)
+        createTable(self, "After IP: "+ hex(int(ECinfo[0][1], 2))[2:], 1, 0, 4, 80)
+        createTable(self, "L0: "+hex(int(ECinfo[0][2][0], 2))[2:], 2, 0, 2, 40)
+        createTable(self, "R0: "+hex(int(ECinfo[0][3][0], 2))[2:], 2, 2, 2, 40)
         ttl = ["Round", "Left", "Right", "Round Key"]
+
         for i in range(4):
-            createTable(self, ttl[i], 1, i)
+            createTable(self, ttl[i], 3, i)
+
+        for i in range(16):
+            createTable(self, "Round "+str(i+1), i+4, 0)
+            createTable(self, hex(int(ECinfo[0][2][i+1], 2))[2:], i + 4, 1)
+            createTable(self, hex(int(ECinfo[0][3][i+1], 2))[2:], i + 4, 2)
+            createTable(self, hex(int(rouKey[i+1], 2))[2:], i + 4, 3)
+
+        createTable(self, "After combination: "+hex(int(ECinfo[0][3][16], 2))[2:]+hex(int(ECinfo[0][2][16], 2))[2:], 20, 0, 4, 80)
+        createTable(self, "Ciphertext: " + hex(int(ECinfo[0][4], 2))[2:], 21, 0, 4, 80)
 
 class key_disl(Toplevel):
     def __init__(self, key):
         Toplevel.__init__(self)
         self.keys = "".join(str(bin(int(c, 16))[2:].zfill(4)) for c in key)
         print(len(self.keys))
-        k = Entry(self, width=20, fg='black')
-        k.grid(row=0, column=0)
-        k.insert(END, "Key: " + key)
+        createTable(self, "Key: " + key, 0, 0, 4, 80)
         ttl = ["Round", "Left", "Right", "Round Key"]
         for i in range(len(ttl)):
             createTable(self, ttl[i], 1, i)
@@ -118,20 +133,19 @@ class des_disl(Frame):
 
     def encryption(self):
         if True:
-            en = encrypt_disl("aabb09182736ccdd", "aabb09182736ccdd")
+            en = encrypt_disl(self.plaintxt.get(), self.key.get())
+            # en = encrypt_disl("123456abcd132536", "aabb09182736ccdd")
             en.geometry("600x700")
             en.grab_set()
 
     def gen_key(self):
         if (len(self.key.get()) <= 16):
             print("True")
-            # top = key_disl(self.key.get())
-            top = key_disl("aabb09182736ccdd")
+            top = key_disl(self.key.get())
+            # top = key_disl("aabb09182736ccdd")
             top.geometry("600x700")
             top.grab_set()
 
 
         else:
             tkinter.messagebox.showerror('XXX', 'Key need 64-bit length')
-
-    # def key_gen_window(self):

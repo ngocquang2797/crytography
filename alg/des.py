@@ -126,6 +126,7 @@ class DES(object):
         print((self.plaintxt))
         print(len(self.plaintxt))
         self.code = []
+        self.__info = []
         self.gen_key()
         self.decode()
 
@@ -142,21 +143,28 @@ class DES(object):
     def decode(self):
         for j in range(int(len(self.plaintxt)/64)):
             mss = self.plaintxt[j*64:j*64+64]
-            self.msn = ["".join(mss[ip[i] - 1] for i in range(64))]
-            self.L = [self.msn[0][:32]]
-            self.R = [self.msn[0][32:]]
+            msn = "".join(mss[ip[i] - 1] for i in range(64))
+            L = [msn[:32]]
+            R = [msn[32:]]
             for i in range(16):
-                self.L.append(self.R[i])
-                self.R.append(XOR(self.L[i], f(self.R[i], self.key_gen[i + 1])))
+                L.append(R[i])
+                R.append(XOR(L[i], f(R[i], self.key_gen[i + 1])))
 
-            RL = self.R[-1] + self.L[-1]
+            RL = R[-1] + L[-1]
             de = "".join(RL[fp[i] - 1] for i in range(64))
+            self.__info.append([mss, msn, L, R, de])
             self.code.append(de)
+
+    def getInfo(self):
+        return self.__info
+
+    def getKey(self):
+        return self.key_gen
 
     def code_hex(self):
         return "".join(hex(int(self.code[i],2))[2:] for i in range(len(self.code)))
 
 
-acc = DES(plaintxt="ABC516810ABC0000ABC516810ABC0000", key="1254687512546875", opt="HEX")
-print(acc.code_hex())
+# acc = DES(plaintxt="ABC516810ABC0000ABC516810ABC0000", key="1254687512546875", opt="HEX")
+# print(acc.code_hex())
 # print(acc.key)
