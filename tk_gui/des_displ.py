@@ -38,6 +38,8 @@ class encrypt_disl(Toplevel):
         self.encrypt = DES(plaintxt, key, opt_code)
         createTable(self, "Plain text: " + plaintxt, 0, 0)
         ttl = ["Round", "Left", "Right", "Round Key"]
+        for i in range(4):
+            createTable(self, ttl[i], 1, i)
 
 class key_disl(Toplevel):
     def __init__(self, key):
