@@ -11,7 +11,7 @@ def main():
     root = tk.Tk()
     root.geometry("1200x600")
     root.title("Tab Widget")
-    # root.iconbitmap("f:/Code/Python/crytography/icon/HUST.ico")
+    root.iconbitmap("./icon/HUST.ico")
     tabControl = ttk.Notebook(root)
 
     tab1 = des_disl()
