@@ -123,8 +123,8 @@ class DES(object):
             self.key = key
         self.plaintxt = str(self.plaintxt).zfill((int(len(plaintxt)/64)+1)*64)
         self.key = str(self.key).zfill(64)
-        print((self.plaintxt))
-        print(len(self.plaintxt))
+        # print((self.plaintxt))
+        # print(len(self.plaintxt))
         self.code = []
         self.__info = []
         self.gen_key()

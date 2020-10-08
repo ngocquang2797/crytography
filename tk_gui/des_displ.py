@@ -35,28 +35,59 @@ def createTable(root, txt, row, col, spanx = 1, width = 20):
 class encrypt_disl(Toplevel):
     def __init__(self, plaintxt, key, opt_code="HEX"):
         Toplevel.__init__(self)
+        self.__loc = 0
         self.encrypt = DES(plaintxt, key, opt_code)
-        ECinfo = self.encrypt.getInfo()
-        rouKey = self.encrypt.getKey()
-        # print(ECinfo)
-        # print(ECinfo[0][2])
-        createTable(self, "Plain text: " + plaintxt, 0, 0, 4, 80)
-        createTable(self, "After IP: "+ hex(int(ECinfo[0][1], 2))[2:], 1, 0, 4, 80)
-        createTable(self, "L0: "+hex(int(ECinfo[0][2][0], 2))[2:], 2, 0, 2, 40)
-        createTable(self, "R0: "+hex(int(ECinfo[0][3][0], 2))[2:], 2, 2, 2, 40)
+        self.ECinfo = self.encrypt.getInfo()
+        self.rouKey = self.encrypt.getKey()
+
+        self.printData()
+
+        self.btn_back = Button(self, text="<<", command=self.back)
+        self.btn_next = Button(self, text=">>", command=self.next)
+        if(self.__loc == 0):
+            self.btn_back['state'] = DISABLED
+        if (self.__loc == len(self.ECinfo)-1):
+            self.btn_next['state'] = DISABLED
+        self.btn_back.grid(row=22, column=1)
+        self.btn_next.grid(row=22, column=2)
+
+    def printData(self):
+        createTable(self, "Plain text: " + hex(int(self.ECinfo[self.__loc][0], 2))[2:], 0, 0, 4, 80)
+        createTable(self, "After IP: " + hex(int(self.ECinfo[self.__loc][1], 2))[2:], 1, 0, 4, 80)
+        createTable(self, "L0: " + hex(int(self.ECinfo[self.__loc][2][0], 2))[2:], 2, 0, 2, 40)
+        createTable(self, "R0: " + hex(int(self.ECinfo[self.__loc][3][0], 2))[2:], 2, 2, 2, 40)
         ttl = ["Round", "Left", "Right", "Round Key"]
 
         for i in range(4):
             createTable(self, ttl[i], 3, i)
 
         for i in range(16):
-            createTable(self, "Round "+str(i+1), i+4, 0)
-            createTable(self, hex(int(ECinfo[0][2][i+1], 2))[2:], i + 4, 1)
-            createTable(self, hex(int(ECinfo[0][3][i+1], 2))[2:], i + 4, 2)
-            createTable(self, hex(int(rouKey[i+1], 2))[2:], i + 4, 3)
+            createTable(self, "Round " + str(i + 1), i + 4, 0)
+            createTable(self, hex(int(self.ECinfo[self.__loc][2][i + 1], 2))[2:], i + 4, 1)
+            createTable(self, hex(int(self.ECinfo[self.__loc][3][i + 1], 2))[2:], i + 4, 2)
+            createTable(self, hex(int(self.rouKey[i + 1], 2))[2:], i + 4, 3)
 
-        createTable(self, "After combination: "+hex(int(ECinfo[0][3][16], 2))[2:]+hex(int(ECinfo[0][2][16], 2))[2:], 20, 0, 4, 80)
-        createTable(self, "Ciphertext: " + hex(int(ECinfo[0][4], 2))[2:], 21, 0, 4, 80)
+        createTable(self, "After combination: " + hex(int(self.ECinfo[self.__loc][3][16], 2))[2:] + hex(
+            int(self.ECinfo[self.__loc][2][16], 2))[2:], 20, 0, 4, 80)
+        createTable(self, "Ciphertext: " + hex(int(self.ECinfo[self.__loc][4], 2))[2:], 21, 0, 4, 80)
+
+    def back(self):
+        self.__loc = self.__loc - 1
+        self.printData()
+        if (self.__loc < len(self.ECinfo) - 1):
+            self.btn_next['state'] = NORMAL
+        if (self.__loc == 0):
+            self.btn_back['state'] = DISABLED
+        print(self.__loc)
+
+    def next(self):
+        self.__loc = self.__loc + 1
+        self.printData()
+        if (self.__loc > 0):
+            self.btn_back['state'] = NORMAL
+        if (self.__loc == len(self.ECinfo)-1):
+            self.btn_next['state'] = DISABLED
+        print(self.__loc)
 
 class key_disl(Toplevel):
     def __init__(self, key):
@@ -114,7 +145,6 @@ class des_disl(Frame):
         # self.pack(fill=BOTH, expand=1)
         plain_txt = Label(self, text="Plaintext")
         plain_txt.grid(row=0, column=1, padx=30, pady=30)
-        # self.plaintxt.trace("w", self.decode)
         self.plain_txt_box = Entry(self, textvariable=self.plaintxt, width=150)
         self.plain_txt_box.bind('<KeyPress>', self.keyPress)
         self.plain_txt_box.grid(row=0, column=2)
@@ -134,12 +164,12 @@ class des_disl(Frame):
     def encryption(self):
         if True:
             en = encrypt_disl(self.plaintxt.get(), self.key.get())
-            # en = encrypt_disl("123456abcd132536", "aabb09182736ccdd")
+            # en = encrypt_disl("123456abcd132536123456efcd132536", "aabb09182736ccdd")
             en.geometry("600x700")
             en.grab_set()
 
     def gen_key(self):
-        if (len(self.key.get()) <= 16):
+        if (len(self.key.get()) == 16):
             print("True")
             top = key_disl(self.key.get())
             # top = key_disl("aabb09182736ccdd")
