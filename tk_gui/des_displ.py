@@ -28,7 +28,7 @@ pc2 = [14, 17, 11, 24, 1, 5,
 numls = [1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1]
 
 def createTable(root, txt, row, col, spanx = 1, width = 20):
-    t = Entry(root, width=width+spanx-1, fg='black')
+    t = Entry(root, width=width+spanx-1, fg='black', font="Calibri 11")
     t.grid(row=row, column=col, columnspan=spanx)
     t.insert(END, txt)
 
