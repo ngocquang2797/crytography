@@ -22,10 +22,20 @@ class Vegenere(object):
 
     def decry(self, cipher, key):
         plaintxt = ""
+        k = self.key_stream(self, key)
+        for i in range(len(cipher)):
+            if cipher[i].isupper():
+                plaintxt += chr((ord(cipher[i]) - (k[i%len(k)]) - 65) % 26 + 97)
+            else:
+                plaintxt += chr((ord(cipher[i]) - (k[i%len(k)]) - 97) % 26 + 97)
 
-plt = "sheislistening"
-k = "PASCAL"
-cp = "PASCAL"
-C = Vegenere
-print(C.encry(C, plt, k))
-# print(C.decry(C, cp, k))
+        return plaintxt
+
+
+if __name__ == "__main__":
+    plt = "sheislistening"
+    k = "PASCAL"
+    cp = "HHWKSWXSLGNTCG"
+    C = Vegenere
+    print(C.encry(C, plt, k))
+    print(C.decry(C, cp, k))

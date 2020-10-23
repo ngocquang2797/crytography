@@ -22,3 +22,9 @@ class Affine(object):
     def decry(self, cipher, key):
         return ''.join([chr(((modinv(key[0], 26) * (ord(c) - ord('A') - key[1]))
                              % 26) + ord('A')) for c in cipher])
+
+if __name__ == "__main__":
+    plt = "hello"
+    k = [7, 2]
+    A = Affine
+    print(A.encry(A, plt, k))

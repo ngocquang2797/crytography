@@ -32,10 +32,10 @@ class AutoKey(object):
 
         return plaintxt
 
-
-plt = "attackistoday"
-k = 12
-cp = "MTMTCMSALHRDY"
-C = AutoKey
-print(C.encry(C, plt, k))
-print(C.decry(C, cp, k))
+if __name__ == "__main__":
+    plt = "attackistoday"
+    k = 12
+    cp = "MTMTCMSALHRDY"
+    C = AutoKey
+    print(C.encry(C, plt, k))
+    print(C.decry(C, cp, k))
