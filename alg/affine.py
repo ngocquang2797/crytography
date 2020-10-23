@@ -24,7 +24,14 @@ class Affine(object):
                              % 26) + ord('A')) for c in cipher])
 
 if __name__ == "__main__":
-    plt = "hello"
-    k = [7, 2]
+    # plt = "hello"
+    # k = [7, 2]
+    print("Nhap ban tin ro: ")
+    plt = input()
+    k = []
+    print("Nhap khoa k1: ")
+    k.append(int(input()))
+    print("Nhap khoa k2: ")
+    k.append(int(input()))
     A = Affine
     print(A.encry(A, plt, k))
