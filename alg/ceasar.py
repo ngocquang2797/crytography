@@ -34,4 +34,3 @@ if __name__ == "__main__":
     text = input()
     txt = Ceasar()
     print("Ban tin duoc ma hoa: " + txt.encryp(plaintxt=text))
-    # print(txt.decryp(txt, plaintxt=crtxt))

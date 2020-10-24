@@ -33,12 +33,9 @@ class AutoKey(object):
         return plaintxt
 
 if __name__ == "__main__":
-    # plt = "attackistoday"
     print("Nhap ban tin ro: ")
     plt = input()
     print("Nhap Khoa K: ")
     k = int(input())
-    # cp = "MTMTCMSALHRDY"
     C = AutoKey
-    print(C.encry(C, plt, k))
-    # print(C.decry(C, cp, k))
+    print("Ban tin duoc ma hoa: " + C.encry(C, plt, k))

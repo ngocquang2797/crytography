@@ -168,3 +168,10 @@ class DES(object):
 # acc = DES(plaintxt="ABC516810ABC0000ABC516810ABC0000", key="1254687512546875", opt="HEX")
 # print(acc.code_hex())
 # print(acc.key)
+if __name__ == "__main__":
+    print("Nhap ban tin ro (HEX): ")
+    plt = input()
+    print("Nhap Khoa K: ")
+    k = input()
+    en = DES(plaintxt=plt, key=k, opt="HEX")
+    print("Ban tin duoc ma hoa: " + en.code_hex())

@@ -35,5 +35,4 @@ if __name__ == "__main__":
     print("Nhap khoa k: ")
     key = int(input())
     txt = Shift
-    print(txt.encryp(txt, plaintxt=text, k=key))
-    # print(txt.decryp(txt, plaintxt=crtxt, k=key))
+    print("Ban tin duoc ma hoa: " + txt.encryp(txt, plaintxt=text, k=key))

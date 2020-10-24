@@ -15,17 +15,17 @@ def modinv(a, m):
         return x % m
 
 class Affine(object):
+    # Ma hoa
     def encry(self, plaintxt, key):
         return ''.join([chr(((key[0] * (ord(t) - ord('A')) + key[1]) % 26)
                             + ord('A')) for t in plaintxt.upper().replace(' ', '')])
 
+    # Giai ma
     def decry(self, cipher, key):
         return ''.join([chr(((modinv(key[0], 26) * (ord(c) - ord('A') - key[1]))
                              % 26) + ord('A')) for c in cipher])
 
 if __name__ == "__main__":
-    # plt = "hello"
-    # k = [7, 2]
     print("Nhap ban tin ro: ")
     plt = input()
     k = []
@@ -34,4 +34,4 @@ if __name__ == "__main__":
     print("Nhap khoa k2: ")
     k.append(int(input()))
     A = Affine
-    print(A.encry(A, plt, k))
+    print("Ban tin duoc ma hoa: " + A.encry(A, plt, k))

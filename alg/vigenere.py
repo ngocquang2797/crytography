@@ -33,13 +33,11 @@ class Vegenere(object):
 
 
 if __name__ == "__main__":
-    plt = "sheislistening"
     print("Nhap ban tin ro: ")
-    text = input()
+    plt = input()
     print("Nhap khoa k: ")
     k = input()
-    # k = "PASCAL"
     cp = "HHWKSWXSLGNTCG"
     C = Vegenere
-    print(C.encry(C, plt, k))
+    print("Ban tin duoc ma hoa: " + C.encry(C, plt, k))
     # print(C.decry(C, cp, k))
