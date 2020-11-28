@@ -10,7 +10,7 @@ def egcd(a, b):
 def modinv(a, m):
     gcd, x, y = egcd(a, m)
     if gcd != 1:
-        return None  # modular inverse does not exist
+        return None
     else:
         return x % m
 
